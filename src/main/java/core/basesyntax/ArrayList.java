@@ -171,7 +171,7 @@ public class ArrayList<T> implements List<T> {
     public void growList(int addRange) {
 
         if (elementData.length < (size + addRange)) {
-            int newSize = Math.max((elementData.length + elementData.length >> 1),
+            int newSize = Math.max((elementData.length + (elementData.length >> 1)),
                               (size + addRange));
             Object[] tempArr = new Object[newSize];
             for (int i = 0;i < size;i++) {
@@ -186,7 +186,7 @@ public class ArrayList<T> implements List<T> {
     public Object[] toArray(int newSize) {
 
         Object[] newArr = new Object[newSize];
-        for (int i = 0;i < elementData.length; i++) {
+        for (int i = 0;i < newSize; i++) {
             newArr[i] = elementData[i];
         }
 
