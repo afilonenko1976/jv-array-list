@@ -19,6 +19,6 @@ public interface List<T> {
 
     boolean isEmpty();
 
-    Object[] toArray();
+    Object[] toArray(int newSize);
 
 }

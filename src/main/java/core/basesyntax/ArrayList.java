@@ -7,12 +7,12 @@ public class ArrayList<T> implements List<T> {
 
     private static final int DEFAULT_SIZE = 10;
     private int size = 0;
-    private Object[] elementData;
+    private Object[] elementData = new Object[DEFAULT_SIZE];
 
     @Override
     public void add(T value) {
 
-        if (rangeCheckForAdd()) {
+        if (size == elementData.length) {
             growList(1);
         }
 
@@ -27,7 +27,7 @@ public class ArrayList<T> implements List<T> {
             throw new ArrayListIndexOutOfBoundsException("The index is invalid");
         }
 
-        if (rangeCheckForAdd()) {
+        if (size == elementData.length) {
             growList(1);
         }
 
@@ -51,17 +51,17 @@ public class ArrayList<T> implements List<T> {
 
         int addRange = list.size();
 
-        if (size == 0 || size + addRange > elementData.length) {
+        if (size + addRange > elementData.length) {
             growList(addRange);
         }
 
-        Object[] source = list.toArray();
-        int count = size + list.size();
-        for (int i = size,k = 0;i < count;i++,k++) {
+        int addSize = list.size();
+        Object[] source = list.toArray(addSize);
+        int newSize = size + addSize;
+        for (int i = size,k = 0;i < newSize;i++,k++) {
             elementData[i] = source[k];
-            size++;
         }
-
+        size = newSize;
     }
 
     @Override
@@ -168,34 +168,24 @@ public class ArrayList<T> implements List<T> {
         return size == 0;
     }
 
-    public boolean rangeCheckForAdd() {
-        return (elementData == null || size == elementData.length) ? true : false;
-    }
-
     public void growList(int addRange) {
 
-        if (elementData != null) {
-
-            if (elementData.length < (size + addRange)) {
-                int newSize = Math.max((elementData.length + elementData.length >> 1),
-                                  (size + addRange));
-                Object[] tempArr = new Object[newSize];
-                for (int i = 0;i < size;i++) {
-                    tempArr[i] = elementData[i];
-                }
-                elementData = tempArr;
+        if (elementData.length < (size + addRange)) {
+            int newSize = Math.max((elementData.length + elementData.length >> 1),
+                              (size + addRange));
+            Object[] tempArr = new Object[newSize];
+            for (int i = 0;i < size;i++) {
+                tempArr[i] = elementData[i];
             }
-
-        } else {
-            elementData = new Object[DEFAULT_SIZE];
+            elementData = tempArr;
         }
 
     }
 
     @Override
-    public Object[] toArray() {
+    public Object[] toArray(int newSize) {
 
-        Object[] newArr = new Object[elementData.length];
+        Object[] newArr = new Object[newSize];
         for (int i = 0;i < elementData.length; i++) {
             newArr[i] = elementData[i];
         }
